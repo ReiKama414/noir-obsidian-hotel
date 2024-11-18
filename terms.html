@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-i18n-title-key="terms_doc_title">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>條款 · L'Obsidienne Palace · DEMO</title>
+  <meta name="description" content="DEMO terms — fictional hotel showcase. Not a real booking service." />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="theme-color" content="#0a0a0b" />
+  <link rel="icon" href="./favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Zen+Old+Mincho:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="subpage">
+  <div class="demo-banner" role="status">
+    <span data-i18n="demo_banner">DEMO · 虛構旅館展示頁 · 不可真實預訂</span>
+  </div>
+
+  <header class="site-header is-solid subpage-header">
+    <div class="header-inner">
+      <a class="brand-mark" href="./index.html" data-i18n-aria="aria_home" aria-label="回到首頁">
+        <span class="brand-name">L'Obsidienne</span>
+      </a>
+      <div class="header-actions">
+        <button type="button" id="btn-lang-toggle" class="btn-icon" data-i18n-aria="aria_lang" data-i18n-title="aria_lang" aria-label="切換為 English" title="切換為 English">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5" />
+            <path d="M3.5 12h17M12 3.5c2.5 2.6 3.8 5.4 3.8 8.5S14.5 17.9 12 20.5C9.5 17.9 8.2 15.1 8.2 12S9.5 6.1 12 3.5z" fill="none" stroke="currentColor" stroke-width="1.5" />
+          </svg>
+          <span class="visually-hidden lang-badge">EN</span>
+        </button>
+        <a class="btn-text btn-text-strong" href="./index.html" data-i18n="nav_home">首頁</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="subpage-main">
+    <article class="section-shell legal-article">
+      <p class="section-label" data-i18n="footer_terms">條款</p>
+      <h1 class="section-title" data-i18n="terms_title">使用條款</h1>
+      <p class="section-lede" data-i18n="terms_lede">L'Obsidienne Palace 為互動展示 DEMO，品牌、房型與價格皆屬虛構</p>
+
+      <div class="legal-body">
+        <h2 data-i18n="terms_h1">示範性質</h2>
+        <p data-i18n="terms_p1">本站不提供真實住宿、餐飲、接送或付款。畫面上的「預訂憑證」僅為前端產生的展示碼</p>
+
+        <h2 data-i18n="terms_h2">智慧財產</h2>
+        <p data-i18n="terms_p2">本專案以 MIT 授權釋出。詳見授權全文</p>
+
+        <h2 data-i18n="terms_h3">免責</h2>
+        <p data-i18n="terms_p3">DEMO 可能隨時變更或下線。作者不對使用本頁造成的任何損失負責，也不保證內容正確或持續可用</p>
+
+        <h2 data-i18n="terms_h4">相關連結</h2>
+        <p class="legal-links">
+          <a href="./LICENSE" data-i18n="footer_license">授權全文</a>
+          <a href="./privacy.html" data-i18n="footer_privacy">隱私說明</a>
+        </p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© 2024 L'Obsidienne Palace · DEMO</p>
+      <div class="footer-links">
+        <a href="./index.html" data-i18n="nav_home">首頁</a>
+        <a href="./privacy.html" data-i18n="footer_privacy">隱私</a>
+        <a href="./terms.html" data-i18n="footer_terms">條款</a>
+        <a href="./LICENSE" data-i18n="footer_license">授權</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookie-consent" class="cookie-bar" role="dialog" aria-modal="false" aria-labelledby="cookie-title" hidden>
+    <div class="cookie-bar-inner">
+      <div class="cookie-copy">
+        <p id="cookie-title" class="cookie-title" data-i18n="cookie_title">Cookie 偏好</p>
+        <p class="cookie-text" data-i18n="cookie_text">本 DEMO 使用必要 Cookie 與本機儲存以記住語系與同意狀態。無追蹤廣告、無真實訂房後端</p>
+      </div>
+      <div class="cookie-actions">
+        <a href="./privacy.html#cookies" class="cookie-link" data-i18n="cookie_privacy">隱私說明</a>
+        <button type="button" id="cookie-essential" class="btn-text" data-i18n="cookie_essential">僅必要</button>
+        <button type="button" id="cookie-accept" class="btn-solid cookie-accept" data-i18n="cookie_accept">接受</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/cookies.js"></script>
+</body>
+</html>

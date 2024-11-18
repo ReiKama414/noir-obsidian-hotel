@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L'Obsidienne Palace · DEMO</title>
+  <meta name="description" content="DEMO — L'Obsidienne Palace 虛構旅館展示頁。不可真實預訂。" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="theme-color" content="#0a0a0b" />
+  <link rel="icon" href="./favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Zen+Old+Mincho:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="demo-banner" role="status">
+    <span data-i18n="demo_banner">DEMO · 虛構旅館展示頁 · 不可真實預訂</span>
+  </div>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <div id="webgl-container" aria-hidden="true"></div>
+  <div id="webgl-fallback" class="webgl-fallback" hidden data-i18n="webgl_fallback">此裝置無法顯示 3D 場景，內容仍可正常瀏覽</div>
+
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <button type="button" class="brand-mark" data-scroll-to="section-hero" data-i18n-aria="aria_home" aria-label="回到首頁">
+        <span class="brand-name">L'Obsidienne</span>
+      </button>
+
+      <nav class="nav-desktop" data-i18n-aria="aria_nav" aria-label="主要導覽">
+        <button type="button" data-scroll-to="section-intro" data-nav-section="section-intro" data-i18n="nav_about">關於</button>
+        <button type="button" data-scroll-to="section-sanctuaries" data-nav-section="section-sanctuaries" data-i18n="nav_suites">套房</button>
+        <button type="button" data-scroll-to="section-atelier" data-nav-section="section-atelier" data-i18n="nav_atelier">石材工藝</button>
+        <button type="button" data-scroll-to="section-gastronomy" data-nav-section="section-gastronomy" data-i18n="nav_dining">餐飲</button>
+        <button type="button" data-scroll-to="section-reservation" data-nav-section="section-reservation" data-i18n="nav_book">預訂</button>
+      </nav>
+
+      <div class="header-actions">
+        <div class="header-tools" role="group" data-i18n-aria="aria_tools" aria-label="工具">
+          <button type="button" id="btn-sound-toggle" class="btn-icon hidden-sm" aria-pressed="false" data-i18n-aria="aria_sound_off" data-i18n-title="aria_sound_off" aria-label="開啟聲景" title="開啟聲景">
+            <svg class="icon icon-sound-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 10v4h3l4 3V7L7 10H4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M16 9.5l4 5M20 9.5l-4 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <svg class="icon icon-sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
+              <path d="M4 10v4h3l4 3V7L7 10H4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M15.5 9.5a4 4 0 010 5M17.8 7.5a7 7 0 010 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+          </button>
+
+          <button type="button" id="btn-currency-toggle" class="btn-icon" data-i18n-aria="aria_currency" data-i18n-title="aria_currency" aria-label="切換幣別" title="切換幣別">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5" />
+              <path d="M12 7.25v9.5M14.6 9.1c-.45-.7-1.35-1.15-2.55-1.15-1.55 0-2.7.9-2.7 2.15 0 1.2.9 1.85 2.55 2.15l.7.15c1.55.3 2.35.85 2.35 2 0 1.25-1.15 2.2-2.85 2.2-1.25 0-2.25-.5-2.75-1.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <span class="visually-hidden" id="currency-badge">NT$</span>
+          </button>
+
+          <button type="button" id="btn-lang-toggle" class="btn-icon" data-i18n-aria="aria_lang" data-i18n-title="aria_lang" aria-label="切換為 English" title="切換為 English">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5" />
+              <path d="M3.5 12h17M12 3.5c2.5 2.6 3.8 5.4 3.8 8.5S14.5 17.9 12 20.5C9.5 17.9 8.2 15.1 8.2 12S9.5 6.1 12 3.5z" fill="none" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+            <span class="visually-hidden lang-badge">EN</span>
+          </button>
+        </div>
+
+        <button type="button" class="btn-text btn-text-strong header-book" data-scroll-to="section-reservation" data-i18n="nav_book">預訂</button>
+        <button type="button" id="btn-mobile-menu" class="btn-icon" data-i18n-aria="aria_menu_open" aria-label="開啟選單" aria-expanded="false" aria-controls="mobile-nav-drawer">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-nav-drawer" class="mobile-drawer" hidden>
+      <button type="button" data-scroll-to="section-intro" data-i18n="nav_about">關於</button>
+      <button type="button" data-scroll-to="section-sanctuaries" data-i18n="nav_suites">套房</button>
+      <button type="button" data-scroll-to="section-atelier" data-i18n="nav_atelier">石材工藝</button>
+      <button type="button" data-scroll-to="section-gastronomy" data-i18n="nav_dining">餐飲</button>
+      <button type="button" data-scroll-to="section-reservation" data-i18n="nav_book">預訂</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="section-hero" class="hero">
+      <div class="hero-veil" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <h1 class="hero-brand gsap-hero-title">
+          <span class="line"><span>L'Obsidienne</span></span>
+        </h1>
+        <p class="hero-place gsap-hero-place">Palace · Taipei</p>
+        <p class="hero-copy gsap-hero-subtitle" data-i18n="hero_copy">Nero Marquina 黑石，光緩慢掠過金脈</p>
+        <div class="hero-cta">
+          <button type="button" class="btn-line gsap-hero-cta" data-scroll-to="section-sanctuaries" data-i18n="hero_cta">查看套房</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-intro" class="intro-pin">
+      <div class="section-shell intro-grid">
+        <div class="gsap-intro-left">
+          <p class="section-label">Taipei</p>
+          <h2 class="section-title" data-i18n="intro_title">以石材寫成的旅館</h2>
+          <dl class="intro-stat">
+            <div>
+              <dt data-i18n="intro_stat_quarry">原礦</dt>
+              <dd data-i18n="intro_stat_quarry_v">畢爾包</dd>
+            </div>
+            <div>
+              <dt data-i18n="intro_stat_vein">金脈</dt>
+              <dd data-i18n="intro_stat_vein_v">24K 嵌縫</dd>
+            </div>
+            <div>
+              <dt data-i18n="intro_stat_suites">套房</dt>
+              <dd data-i18n="intro_stat_suites_v">28 間</dd>
+            </div>
+            <div>
+              <dt data-i18n="intro_stat_dining">餐廳</dt>
+              <dd data-i18n="intro_stat_dining_v">三星</dd>
+            </div>
+          </dl>
+        </div>
+        <p class="intro-quote gsap-intro-quote" data-i18n="intro_quote">
+          不必多餘裝飾。光線掠過切面時，金脈自己會說話
+        </p>
+      </div>
+    </section>
+
+    <section id="section-sanctuaries" class="sanctuaries">
+      <div class="section-shell">
+        <div class="sanctuaries-head gsap-reveal">
+          <div>
+            <p class="section-label">Suites</p>
+            <h2 class="section-title" data-i18n="suites_title">三間不同節奏的黑曜套房</h2>
+            <p class="section-lede" data-i18n="suites_lede">頂層、水療、整石浴殿——挑選適合此行步調的一間</p>
+          </div>
+          <div class="filter-row" role="tablist" data-i18n-aria="aria_suite_filter" aria-label="套房篩選">
+            <button type="button" data-filter="all" class="btn-suite-filter is-active" role="tab" aria-selected="true" data-i18n="filter_all">全部</button>
+            <button type="button" data-filter="penthouse" class="btn-suite-filter" role="tab" aria-selected="false" data-i18n="filter_penthouse">頂層</button>
+            <button type="button" data-filter="pool" class="btn-suite-filter" role="tab" aria-selected="false" data-i18n="filter_pool">湯池</button>
+            <button type="button" data-filter="royal" class="btn-suite-filter" role="tab" aria-selected="false" data-i18n="filter_royal">浴殿</button>
+          </div>
+        </div>
+        <div id="suites-grid"></div>
+      </div>
+    </section>
+
+    <section id="section-atelier" class="atelier">
+      <div class="section-shell atelier-layout">
+        <div class="gsap-reveal">
+          <p class="section-label">Marble Atelier</p>
+          <h2 class="section-title" data-i18n="atelier_title">石材工藝，跟著滾動展開</h2>
+          <p class="section-lede" data-i18n="atelier_lede">
+            點選下方節點，背景的黑曜結構會緩緩轉向、解構，對應每一道工序
+          </p>
+
+          <div class="hotspot-list">
+            <button type="button" data-hotspot="0" class="btn-atelier-hotspot is-active" aria-pressed="true">
+              <span data-i18n="hotspot_0">西班牙 Nero Marquina 原石</span>
+              <span class="idx">01</span>
+            </button>
+            <button type="button" data-hotspot="1" class="btn-atelier-hotspot" aria-pressed="false">
+              <span data-i18n="hotspot_1">24K 金箔嵌縫</span>
+              <span class="idx">02</span>
+            </button>
+            <button type="button" data-hotspot="2" class="btn-atelier-hotspot" aria-pressed="false">
+              <span data-i18n="hotspot_2">八道鏡面拋光</span>
+              <span class="idx">03</span>
+            </button>
+            <button type="button" data-hotspot="3" class="btn-atelier-hotspot" aria-pressed="false">
+              <span data-i18n="hotspot_3">靜音與地暖夾層</span>
+              <span class="idx">04</span>
+            </button>
+          </div>
+
+          <div class="atelier-tools">
+            <button type="button" data-theme="nero" class="btn-marble-theme is-active" aria-pressed="true" data-i18n="theme_nero">黑曜金脈</button>
+            <button type="button" data-theme="verde" class="btn-marble-theme" aria-pressed="false" data-i18n="theme_verde">帝王翠玉</button>
+            <button type="button" data-theme="liquidGold" class="btn-marble-theme" aria-pressed="false" data-i18n="theme_liquid">流金</button>
+            <button type="button" id="btn-3d-explode" aria-pressed="false" data-i18n="explode">解構幾何</button>
+            <button type="button" id="btn-3d-orbit" aria-pressed="false" data-i18n="orbit">近距鑑賞</button>
+          </div>
+        </div>
+
+        <div id="atelier-detail-box" class="atelier-detail gsap-reveal">
+          <p id="atelier-spec-code" class="code">SPEC — 01</p>
+          <h3 id="atelier-spec-title"></h3>
+          <p id="atelier-spec-subtitle" class="sub"></p>
+          <p id="atelier-spec-desc" class="desc"></p>
+          <div id="atelier-spec-metrics" class="atelier-metrics"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-gastronomy" class="gastronomy">
+      <div class="gastronomy-visual gsap-parallax-img">
+        <img src="assets/images/michelin_dining.jpg" alt="Le Salon Noir 餐廳內景" data-i18n-alt="dining_img_alt" loading="lazy" decoding="async" width="1600" height="1067" />
+      </div>
+      <div class="gastronomy-copy gsap-reveal">
+        <p class="section-label">Le Salon Noir</p>
+        <h2 class="section-title" data-i18n="dining_title">黑曜石柱下的晚餐</h2>
+        <p class="section-lede" data-i18n="dining_lede">
+          七米整石圓柱環抱餐廳，侍酒師藏著一千八百款年份酒，每晚只接待二十四席
+        </p>
+        <div class="gastronomy-notes">
+          <p>
+            <strong data-i18n="dining_note1_t">黑松露八道式</strong>
+            <span data-i18n="dining_note1_d">佩里戈爾黑松露與熟成和牛</span>
+          </p>
+          <p>
+            <strong data-i18n="dining_note2_t">午夜開瓶</strong>
+            <span data-i18n="dining_note2_d">Dom Pérignon P2 私人酒窖</span>
+          </p>
+        </div>
+        <div class="gastronomy-cta">
+          <button type="button" class="btn-line" data-scroll-to="section-reservation" data-i18n="dining_cta">一併預訂晚宴</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-reservation" class="reservation">
+      <div class="section-shell">
+        <div class="gsap-reveal">
+          <p class="section-label">Reservation</p>
+          <h2 class="section-title" data-i18n="book_title">私人禮賓預訂</h2>
+          <p class="section-lede" data-i18n="book_lede">選擇套房與加購項目，即時試算總額並取得入住憑證碼</p>
+        </div>
+
+        <form id="bespoke-reservation-form" class="booking-grid gsap-reveal" novalidate>
+          <div class="booking-fields">
+            <div class="field-row two">
+              <div class="field">
+                <label for="booking-guest-name" data-i18n="label_name">貴賓姓名</label>
+                <input id="booking-guest-name" name="guestName" type="text" value="Alexander Chen" required maxlength="60" autocomplete="name" />
+                <p class="field-error" id="err-guest-name" hidden data-i18n="err_name">請填寫貴賓姓名</p>
+              </div>
+              <div class="field">
+                <label for="booking-checkin-date" data-i18n="label_date">入住日期</label>
+                <input id="booking-checkin-date" name="checkIn" type="date" value="2024-11-15" required min="2024-01-01" max="2024-12-31" />
+                <p class="field-error" id="err-checkin" hidden data-i18n="err_date">請選擇有效入住日期</p>
+              </div>
+            </div>
+
+            <div class="field-row three">
+              <div class="field">
+                <label for="booking-suite-select" data-i18n="label_suite">套房</label>
+                <select id="booking-suite-select" name="suite">
+                  <option value="obsidian-penthouse" data-i18n="suite_penthouse_name">黑曜金脈天際頂層閣樓</option>
+                  <option value="imperial-onyx-pool" data-i18n="suite_pool_name">流金縞瑪瑙無邊際湯池套房</option>
+                  <option value="royal-sovereign-marble" data-i18n="suite_royal_name">皇家黑曜整石浴殿套房</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="booking-nights-select" data-i18n="label_nights">晚數</label>
+                <select id="booking-nights-select" name="nights">
+                  <option value="1" data-i18n="night_1">1 晚</option>
+                  <option value="2" selected data-i18n="night_2">2 晚</option>
+                  <option value="3" data-i18n="night_3">3 晚</option>
+                  <option value="5" data-i18n="night_5">5 晚</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="booking-guests-select" data-i18n="label_guests">人數</label>
+                <select id="booking-guests-select" name="guests">
+                  <option value="1" data-i18n="guest_1">1 位</option>
+                  <option value="2" selected data-i18n="guest_2">2 位</option>
+                  <option value="3" data-i18n="guest_3">3 位</option>
+                  <option value="4" data-i18n="guest_4">4 位</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <span class="field-legend" id="addons-label" data-i18n="label_addons">加購項目</span>
+              <div id="booking-addons-list" class="addons" role="group" aria-labelledby="addons-label"></div>
+            </div>
+
+            <div class="field">
+              <label for="booking-special-notes" data-i18n="label_notes">特別吩咐（選填）</label>
+              <input id="booking-special-notes" name="notes" type="text" value="準備 1996 年份香檳、黑琥珀香氛與低敏鵝絨枕" maxlength="200" />
+            </div>
+          </div>
+
+          <aside class="summary-panel">
+            <h3 data-i18n="summary_title">試算摘要</h3>
+            <div class="summary-lines">
+              <div>
+                <span data-i18n="summary_suite">套房</span>
+                <strong id="summary-suite-name">黑曜金脈天際頂層閣樓</strong>
+              </div>
+              <div>
+                <span data-i18n="summary_trip">行程</span>
+                <strong id="summary-nights-text">2 晚 · 2 位貴賓</strong>
+              </div>
+              <div>
+                <span data-i18n="summary_room">套房小計</span>
+                <strong id="summary-room-cost">NT$ 136,000</strong>
+              </div>
+              <div>
+                <span data-i18n="summary_addon">加購小計</span>
+                <strong id="summary-addon-cost">NT$ 8,800</strong>
+              </div>
+            </div>
+            <div class="summary-total">
+              <span class="label" data-i18n="summary_total">預估總額</span>
+              <span id="summary-total-cost" class="value">NT$ 144,800</span>
+            </div>
+            <button type="submit" id="btn-submit-booking" class="btn-solid" data-i18n="summary_submit">取得預訂憑證</button>
+            <p class="summary-note" data-i18n="summary_note">免收訂金 · 入住前 48 小時可調整</p>
+          </aside>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© 2024 L'Obsidienne Palace · DEMO</p>
+      <div class="footer-links">
+        <button type="button" data-scroll-to="section-hero" data-i18n="footer_top">回頂部</button>
+        <button type="button" data-scroll-to="section-sanctuaries" data-i18n="nav_suites">套房</button>
+        <button type="button" data-scroll-to="section-reservation" data-i18n="nav_book">預訂</button>
+        <a href="./privacy.html" data-i18n="footer_privacy">隱私</a>
+        <a href="./terms.html" data-i18n="footer_terms">條款</a>
+        <a href="./LICENSE" data-i18n="footer_license">授權</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="suite-detail-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="suite-modal-title" hidden>
+    <div id="suite-detail-card" class="modal-panel" tabindex="-1">
+      <button type="button" id="btn-close-suite-modal" class="modal-close" data-i18n-aria="aria_close_suite" aria-label="關閉套房細節">✕</button>
+      <div id="suite-detail-body"></div>
+    </div>
+  </div>
+
+  <div id="vip-pass-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="vip-pass-title" hidden>
+    <div class="modal-panel pass-panel" tabindex="-1">
+      <button type="button" id="btn-close-vip-pass" class="modal-close" data-i18n-aria="aria_close_pass" aria-label="關閉憑證">✕</button>
+      <div id="vip-pass-body"></div>
+    </div>
+  </div>
+
+  <div id="cookie-consent" class="cookie-bar" role="dialog" aria-modal="false" aria-labelledby="cookie-title" hidden>
+    <div class="cookie-bar-inner">
+      <div class="cookie-copy">
+        <p id="cookie-title" class="cookie-title" data-i18n="cookie_title">Cookie 偏好</p>
+        <p class="cookie-text" data-i18n="cookie_text">本 DEMO 使用必要 Cookie 與本機儲存以記住語系與同意狀態。無追蹤廣告、無真實訂房後端</p>
+      </div>
+      <div class="cookie-actions">
+        <a href="./privacy.html#cookies" class="cookie-link" data-i18n="cookie_privacy">隱私說明</a>
+        <button type="button" id="cookie-essential" class="btn-text" data-i18n="cookie_essential">僅必要</button>
+        <button type="button" id="cookie-accept" class="btn-solid cookie-accept" data-i18n="cookie_accept">接受</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/cookies.js"></script>
+  <script src="js/three-scene.js"></script>
+  <script src="js/gsap-animations.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
